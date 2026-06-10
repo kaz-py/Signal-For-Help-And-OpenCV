@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signal for Help · UNAE — Reconocimiento Gestual con Visión por Computadoras</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'IBM Plex Sans',sans-serif;color:#0A192F;background:#fff}
+::selection{background:#0A192F;color:#fff}
+img{max-width:100%;display:block}
+a{text-decoration:none}
+
+/* Animations */
+@keyframes blobPulse{0%,100%{transform:scale(1);opacity:.13}50%{transform:scale(1.28);opacity:.26}}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes arrowPulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes scanline{0%{top:-4%}100%{top:104%}}
+@keyframes alertFlash{0%,100%{box-shadow:inset 0 0 0 3px rgba(220,38,38,0)}50%{box-shadow:inset 0 0 0 3px rgba(220,38,38,.85)}}
+@keyframes blinkText{50%{opacity:.15}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes flowOn{0%,10%{border-color:#6FA0F0;background:rgba(29,91,214,.3);transform:translateY(-4px)}20%,100%{border-color:rgba(255,255,255,.14);background:rgba(255,255,255,.06);transform:translateY(0)}}
+@keyframes flowOnRed{0%,10%{border-color:#F87171;background:rgba(220,38,38,.4);transform:translateY(-4px)}20%,100%{border-color:rgba(220,38,38,.45);background:rgba(220,38,38,.16);transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* Grid bg */
+.grid-bg{background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:52px 52px}
+
+/* Nav */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.93);backdrop-filter:blur(12px);border-bottom:1px solid #E2E8F0}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:10px;color:#0A192F}
+.nav-logo-box{width:28px;height:28px;background:#0A192F;border-radius:6px;display:grid;place-items:center;color:#fff;font:700 12px 'Sora',sans-serif}
+.nav-title{font:700 15px 'Sora',sans-serif;letter-spacing:-.01em}
+.nav-links{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.nav-links a{font:500 13px 'IBM Plex Sans',sans-serif;color:#45556B;transition:color .3s}
+.nav-links a:hover{color:#0A192F}
+.nav-btn{font:600 12px 'IBM Plex Mono',monospace;color:#fff;background:#0A192F;padding:8px 14px;border-radius:6px;transition:background .3s}
+.nav-btn:hover{background:#1D5BD6}
+
+/* Hero */
+.hero{background-color:#0A192F;padding:120px 24px 110px;position:relative;overflow:hidden}
+.hero-blob1{position:absolute;top:8%;left:12%;width:420px;height:420px;border-radius:50%;background:#1D5BD6;filter:blur(110px);animation:blobPulse 7s ease-in-out infinite;pointer-events:none}
+.hero-blob2{position:absolute;bottom:-12%;right:6%;width:380px;height:380px;border-radius:50%;background:#6FA0F0;filter:blur(130px);animation:blobPulse 9s ease-in-out 1.4s infinite;pointer-events:none}
+.hero-inner{max-width:1020px;margin:0 auto;text-align:center;position:relative;z-index:1}
+.hero-pill{display:inline-flex;align-items:center;gap:10px;background:rgba(17,34,64,.7);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);padding:9px 18px;border-radius:99px;margin:0 0 30px;animation:fadeUp .7s ease both}
+.hero-pill span.dot{width:8px;height:8px;border-radius:50%;background:#6FA0F0;flex-shrink:0;animation:pulseDot 1.8s ease-in-out infinite}
+.hero-pill-text{font:500 11.5px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#9FC0F2;text-transform:uppercase}
+.hero-title{font:800 clamp(36px,5.4vw,68px)/1.08 'Sora',sans-serif;letter-spacing:-.025em;margin:0 0 28px;text-wrap:balance;background:linear-gradient(100deg,#fff 15%,#9FC0F2 45%,#6FA0F0 62%,#fff 90%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:fadeUp .8s .1s ease both,gradShift 7s ease-in-out infinite}
+.hero-sub{font:400 clamp(16px,1.6vw,19px)/1.65 'IBM Plex Sans',sans-serif;color:#A8B8CF;max-width:760px;margin:0 auto 44px;text-wrap:pretty;animation:fadeUp .8s .25s ease both}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:50px;animation:fadeUp .8s .4s ease both}
+.hero-btn-main{font:600 14px 'Sora',sans-serif;color:#fff;background:linear-gradient(120deg,#6FA0F0,#1D5BD6);padding:15px 30px;border-radius:8px;box-shadow:0 8px 24px rgba(29,91,214,.35);transition:all .3s}
+.hero-btn-main:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(111,160,240,.5)}
+.hero-btn-sec{font:600 14px 'Sora',sans-serif;color:#fff;background:rgba(17,34,64,.6);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(8px);padding:15px 30px;border-radius:8px;transition:all .3s}
+.hero-btn-sec:hover{border-color:#6FA0F0;background:rgba(29,91,214,.25);transform:translateY(-3px)}
+.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .55s ease both}
+.chip{font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.08em;color:#8FA6C6;border:1px solid rgba(255,255,255,.16);padding:6px 12px;border-radius:99px}
+
+/* Section common */
+.section{padding:100px 24px}
+.section-inner{max-width:1140px;margin:0 auto}
+.sec-kicker{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#1D5BD6;text-transform:uppercase;margin:0 0 14px}
+.sec-title{font:700 clamp(28px,3.4vw,42px)/1.15 'Sora',sans-serif;letter-spacing:-.02em;margin:0 0 22px}
+.sec-lead{font:400 16px/1.75 'IBM Plex Sans',sans-serif;color:#45556B;max-width:880px;text-wrap:pretty}
+
+/* Cards generic */
+.card{background:#fff;border:1px solid #E2E8F0;border-radius:14px;padding:32px 28px;transition:all .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(10,25,47,.10);border-color:#0A192F}
+
+/* Gesture cards */
+.gesture-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:64px}
+.gesture-svg{width:92px;height:92px;display:block;margin-bottom:20px;animation:floatY 5s ease-in-out infinite}
+.gesture-num{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#1D5BD6;margin:0 0 10px}
+.gesture-name{font:700 19px 'Sora',sans-serif;margin:0 0 10px}
+.gesture-desc{font:400 14.5px/1.7 'IBM Plex Sans',sans-serif;color:#45556B;margin:0}
+
+/* Flow deployment */
+.deploy-box{background:#0A192F;border-radius:18px;padding:clamp(32px,5vw,56px);color:#fff}
+.deploy-kicker{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.2em;color:#6FA0F0;text-transform:uppercase;margin:0 0 14px}
+.deploy-title{font:700 clamp(22px,2.6vw,30px)/1.25 'Sora',sans-serif;margin:0 0 18px;max-width:680px}
+.deploy-text{font:400 15.5px/1.75 'IBM Plex Sans',sans-serif;color:#A8B8CF;margin:0 0 18px;max-width:880px;text-wrap:pretty}
+.flow-steps{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap}
+.flow-step{flex:1;min-width:150px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:16px}
+.flow-step-red{background:rgba(220,38,38,.16);border:1px solid rgba(220,38,38,.5)}
+.flow-step-label{font:600 11px 'IBM Plex Mono',monospace;color:#6FA0F0;margin:0 0 6px}
+.flow-step-label-red{color:#F87171}
+.flow-step-text{font:500 13.5px/1.5 'IBM Plex Sans',sans-serif;margin:0}
+.flow-arrow{align-self:center;font:600 16px 'IBM Plex Mono',monospace;color:#6FA0F0;animation:arrowPulse 1.6s ease-in-out infinite}
+
+/* Animated flow steps */
+.flow-step:nth-child(1){animation:flowOn 8s linear infinite}
+.flow-step:nth-child(3){animation:flowOn 8s linear infinite;animation-delay:1.6s}
+.flow-step:nth-child(5){animation:flowOn 8s linear infinite;animation-delay:3.2s}
+.flow-step:nth-child(7){animation:flowOn 8s linear infinite;animation-delay:4.8s}
+.flow-step-red{animation:flowOnRed 8s linear infinite!important;animation-delay:6.4s!important}
+
+/* Two col */
+.two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.code-header{background:#0A192F;padding:14px 20px;display:flex;align-items:center;gap:10px}
+.dot-r{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+.dot-y{width:10px;height:10px;border-radius:50%;background:#FEBC2E}
+.dot-g{width:10px;height:10px;border-radius:50%;background:#28C840}
+.code-label{font:500 12px 'IBM Plex Mono',monospace;color:#8FA6C6;margin-left:8px}
+.code-body{padding:30px 28px}
+.card-kicker{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#1D5BD6;margin:0 0 8px}
+.card-title{font:700 21px 'Sora',sans-serif;margin:0 0 14px}
+.card-text{font:400 14.5px/1.75 'IBM Plex Sans',sans-serif;color:#45556B;margin:0 0 14px;text-wrap:pretty}
+.card-meta{display:grid;gap:8px}
+.meta-row{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #EDF1F6;padding-top:8px}
+.meta-key{font:500 12px 'IBM Plex Mono',monospace;color:#5B6B82}
+.meta-val{font:500 13px 'IBM Plex Sans',sans-serif;text-align:right}
+
+/* Pipeline */
+.pipeline{background:#F4F6F9;border:1px solid #E2E8F0;border-radius:14px;padding:28px;margin-bottom:40px}
+.pipeline-label{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.18em;color:#5B6B82;text-transform:uppercase;margin:0 0 18px}
+.pipeline-steps{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pipe-node{font:500 13px 'IBM Plex Mono',monospace;background:#fff;border:1px solid #CBD5E1;border-radius:8px;padding:10px 16px}
+.pipe-node-end{font:600 13px 'IBM Plex Mono',monospace;background:#0A192F;color:#fff;border-radius:8px;padding:10px 16px}
+.pipe-arrow{font:600 15px 'IBM Plex Mono',monospace;color:#1D5BD6;animation:arrowPulse 1.6s ease-in-out infinite}
+
+/* Pillars */
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:22px}
+.pillar-num{font:800 44px 'Sora',sans-serif;color:#C6D3E6;margin:0 0 6px;line-height:1}
+.pillar-kicker{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#1D5BD6;text-transform:uppercase;margin:0 0 10px}
+.pillar-title{font:700 20px/1.3 'Sora',sans-serif;margin:0 0 14px}
+.pillar-text{font:400 14.5px/1.75 'IBM Plex Sans',sans-serif;color:#45556B;margin:0;text-wrap:pretty}
+
+/* Gallery */
+.monitor-box{background:#081222;border-radius:18px;overflow:hidden;margin-bottom:56px;border:1px solid #16263F}
+.monitor-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 24px;border-bottom:1px solid #16263F;flex-wrap:wrap}
+.monitor-left{display:flex;align-items:center;gap:12px}
+.monitor-dot{width:9px;height:9px;border-radius:50%;background:#EF4444;animation:pulseDot 1.6s ease-in-out infinite}
+.monitor-title{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.14em;color:#C7D4E6}
+.monitor-right{font:500 12px 'IBM Plex Mono',monospace;color:#5B7299}
+.demo-row{display:flex;flex-wrap:wrap;gap:16px;padding:20px 20px 6px}
+.demo-panel{position:relative;flex:2 1 420px;min-height:400px;border-radius:12px;overflow:hidden;border:1px solid #1C3050;background-color:#08111F}
+.demo-svg-wrap{position:absolute;inset:0;width:100%;height:100%}
+.demo-scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(111,160,240,.6),transparent);animation:scanline 3.6s linear infinite;pointer-events:none}
+.demo-overlay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.demo-alert-box{display:flex;align-items:center;gap:10px;background:rgba(220,38,38,.95);color:#fff;font:700 15px 'IBM Plex Mono',monospace;letter-spacing:.12em;padding:14px 22px;border-radius:8px;box-shadow:0 10px 40px rgba(220,38,38,.5);animation:blinkText 1s steps(2,jump-none) infinite}
+.demo-alert-dot{width:10px;height:10px;border-radius:50%;background:#fff}
+.demo-chip{position:absolute;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:5px 10px;border-radius:6px;background:rgba(8,18,34,.82);border:1px solid rgba(255,255,255,.18);color:#fff;pointer-events:none}
+.demo-progress{position:absolute;bottom:0;left:0;height:4px;transition:width .6s ease,background .3s}
+.fsm-panel{flex:1 1 280px;background:#0C1B30;border:1px solid #1C3050;border-radius:12px;padding:18px;display:grid;gap:10px;align-content:start}
+.fsm-label{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#5B7299;margin:0 0 4px;text-transform:uppercase}
+.fsm-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);transition:all .4s}
+.fsm-row.active{border-color:#6FA0F0!important;background:rgba(29,91,214,.22)!important}
+.fsm-row.done{border-color:rgba(46,230,168,.4)!important;background:rgba(46,230,168,.08)!important}
+.fsm-row.alert-row{border-color:rgba(220,38,38,.5)!important;background:rgba(220,38,38,.25)!important}
+.fsm-icon{width:26px;height:26px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;font:700 12px 'IBM Plex Mono',monospace;background:rgba(255,255,255,.08);color:#5B7299;transition:all .4s}
+.fsm-icon.active{background:#6FA0F0!important;color:#08111F!important}
+.fsm-icon.done{background:#2EE6A8!important;color:#08111F!important}
+.fsm-icon.alert{background:#DC2626!important;color:#fff!important;animation:pulseDot 1s ease-in-out infinite}
+.fsm-name{margin:0;font:600 13px 'IBM Plex Sans',sans-serif;color:#E8EFF9}
+.fsm-sub{margin:2px 0 0;font:400 11px 'IBM Plex Mono',monospace;color:#5B7299}
+.fsm-sub.alert{color:#F87171}
+
+/* Log section */
+.log-section{padding:0 24px 20px;display:grid;gap:6px}
+.log-line{font:400 12px 'IBM Plex Mono',monospace;color:#5B7299}
+.log-line.alert{color:#F87171}
+
+/* Screenshots label */
+.shots-label{padding:16px 20px 0}
+.shots-label p{font:600 11px 'IBM Plex Mono',monospace;letter-spacing:.16em;color:#5B7299;text-transform:uppercase}
+.shots-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;padding:12px 20px 20px}
+.shot-wrap{position:relative;border-radius:10px;overflow:hidden;border:1px solid #1C3050}
+.shot-wrap.alert-border{border-color:rgba(220,38,38,.5)}
+.shot-wrap img{width:100%;height:240px;object-fit:cover}
+.shot-chip{position:absolute;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#fff;background:rgba(8,18,34,.82);border:1px solid rgba(255,255,255,.18);padding:4px 9px;border-radius:5px}
+.shot-status{position:absolute;bottom:10px;left:10px;font:600 10px 'IBM Plex Mono',monospace;letter-spacing:.1em;padding:4px 9px;border-radius:5px;background:rgba(8,18,34,.82)}
+.shot-alert{position:absolute;bottom:10px;left:10px;display:flex;align-items:center;gap:7px;font:600 11.5px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#fff;background:rgba(220,38,38,.95);padding:7px 12px;border-radius:6px;animation:blinkText 1.1s steps(2,jump-none) infinite}
+
+/* Repos */
+.repo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.repo-card{display:flex;align-items:center;gap:18px;color:#0A192F;background:#F4F6F9;border:1px solid #E2E8F0;border-radius:14px;padding:26px 28px;transition:all .3s}
+.repo-card:hover{border-color:#0A192F;background:#fff;transform:translateY(-3px);box-shadow:0 14px 36px rgba(10,25,47,.12)}
+.repo-icon{width:36px;height:36px;fill:#0A192F;flex-shrink:0}
+.repo-kicker{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.1em;color:#1D5BD6;margin:0 0 4px}
+.repo-name{font:700 17px 'Sora',sans-serif;margin:0 0 4px}
+.repo-sub{font:400 13px 'IBM Plex Sans',sans-serif;color:#5B6B82;margin:0}
+
+/* UNAE section */
+.unae-section{background-color:#0A192F;padding:110px 24px 0;color:#fff;position:relative;overflow:hidden}
+.unae-inner{max-width:940px;margin:0 auto;text-align:center}
+.unae-kicker{font:600 12px 'IBM Plex Mono',monospace;letter-spacing:.22em;color:#6FA0F0;text-transform:uppercase;margin:0 0 20px}
+.unae-title{font:800 clamp(30px,4.4vw,54px)/1.12 'Sora',sans-serif;letter-spacing:-.025em;margin:0 0 28px;text-wrap:balance}
+.unae-text{font:400 16.5px/1.8 'IBM Plex Sans',sans-serif;color:#A8B8CF;margin:0 0 20px;text-wrap:pretty;max-width:880px}
+.unae-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0 auto 90px}
+.unae-btn-main{font:600 14px 'Sora',sans-serif;color:#0A192F;background:#fff;padding:15px 28px;border-radius:8px;transition:all .3s}
+.unae-btn-main:hover{background:#6FA0F0;transform:translateY(-2px)}
+.unae-btn-sec{font:600 14px 'Sora',sans-serif;color:#fff;border:1px solid rgba(255,255,255,.35);padding:15px 28px;border-radius:8px;transition:all .3s}
+.unae-btn-sec:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+footer{border-top:1px solid rgba(255,255,255,.12);padding:28px 0}
+.footer-inner{max-width:1140px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:0 24px}
+.footer-inst{font:500 12.5px 'IBM Plex Sans',sans-serif;color:#8FA6C6}
+.footer-year{font:500 12px 'IBM Plex Mono',monospace;color:#5B7299}
+
+/* BG gray */
+.bg-gray{background:#F4F6F9}
+
+/* Responsive */
+@media(max-width:640px){
+  .nav-title{display:none}
+  .pillars-grid{grid-template-columns:1fr}
+  .demo-panel{min-height:280px}
+  .fsm-panel{flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <div class="nav-inner">
+    <a href="#inicio" class="nav-logo">
+      <div class="nav-logo-box">U</div>
+      <span class="nav-title">UNAE · Ing Informatica Y Ciencia De Datos</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#unae">UNAE</a>
+      <a href="https://github.com/kaz-py/signal_for_help" target="_blank" class="nav-btn">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="inicio" class="hero grid-bg">
+  <div class="hero-blob1"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-inner">
+    <div class="hero-pill">
+      <span class="dot"></span>
+      <span class="hero-pill-text">1° Año · Ingeniería Informática y Ciencia de Datos · UNAE</span>
+    </div>
+    <h1 class="hero-title">Reconocimiento Gestual con Visión por Computadoras para Detección de Signal for HELP</h1>
+    <p class="hero-sub">Un enfoque de ingeniería multiplataforma para el despliegue de sistemas inteligentes de alerta temprana ante situaciones de riesgo y violencia doméstica.</p>
+    <div class="hero-btns">
+      <a href="#galeria" class="hero-btn-main">Ver el Proyecto en Acción</a>
+      <a href="#repositorios" class="hero-btn-sec">Explorar Repositorios</a>
+    </div>
+    <div class="hero-chips">
+      <span class="chip">OpenCV</span>
+      <span class="chip">MediaPipe · 21 landmarks</span>
+      <span class="chip">Python 3</span>
+      <span class="chip">C++ nativo</span>
+      <span class="chip">Edge Computing</span>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 1: HUMANITARIO -->
+<section id="proyecto" class="section bg-gray">
+  <div class="section-inner">
+    <p class="sec-kicker">01 — Abordaje humanitario</p>
+    <h2 class="sec-title" style="max-width:720px">Una seña silenciosa convertida en infraestructura de protección urbana</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;margin-bottom:56px">
+      <p class="sec-lead">La <strong style="color:#0A192F">Signal for Help</strong> fue diseñada en 2020 por la <strong style="color:#0A192F">Canadian Women's Foundation</strong> como una herramienta de comunicación no verbal y deliberadamente silenciosa: un gesto unimanual que una persona en situación de riesgo podía ejecutar durante una videollamada, en pleno confinamiento por la pandemia, para solicitar auxilio sin emitir sonido alguno y sin dejar rastro digital que pudiera ser interceptado por su agresor.</p>
+      <p class="sec-lead">Su valor reside en su naturaleza secuencial: no es una postura estática, sino una transición biomecánica ordenada de la mano que difícilmente ocurre de forma accidental. Esa propiedad la convierte en un candidato ideal para la verificación algorítmica mediante visión por computadoras, donde la temporalidad y el orden de los estados pueden validarse con una máquina de estados finitos.</p>
+    </div>
+
+    <!-- Gesture cards -->
+    <div class="gesture-grid">
+      <div class="card">
+        <svg class="gesture-svg" viewBox="0 0 140 140">
+          <rect x="45" y="70" width="50" height="42" rx="14" style="fill:#EAF0F8;stroke:#0A192F;stroke-width:3"/>
+          <rect x="46" y="24" width="10" height="52" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="59" y="14" width="10" height="62" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="72" y="19" width="10" height="57" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="85" y="32" width="10" height="44" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="14" y="76" width="32" height="11" rx="5.5" transform="rotate(-38 30 81)" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+        </svg>
+        <p class="gesture-num">ESTADO 1 / 3</p>
+        <h3 class="gesture-name">Palma extendida</h3>
+        <p class="gesture-desc">La mano se presenta con la palma extendida frente al sensor óptico, con los cinco dedos visibles y separados, estableciendo la línea base geométrica de los 21 puntos clave.</p>
+      </div>
+      <div class="card">
+        <svg class="gesture-svg" viewBox="0 0 140 140">
+          <rect x="45" y="70" width="50" height="42" rx="14" style="fill:#EAF0F8;stroke:#0A192F;stroke-width:3"/>
+          <rect x="46" y="24" width="10" height="52" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="59" y="14" width="10" height="62" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="72" y="19" width="10" height="57" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="85" y="32" width="10" height="44" rx="5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="50" y="83" width="38" height="11" rx="5.5" style="fill:#0A192F;stroke:#0A192F;stroke-width:3"/>
+        </svg>
+        <p class="gesture-num">ESTADO 2 / 3</p>
+        <h3 class="gesture-name">Oclusión del pulgar</h3>
+        <p class="gesture-desc">El pulgar se flexiona hacia el centro de la palma. El sistema detecta la reducción de la distancia euclidiana entre la falange distal del pulgar y el centroide palmar.</p>
+      </div>
+      <div class="card">
+        <svg class="gesture-svg" viewBox="0 0 140 140">
+          <rect x="42" y="56" width="56" height="56" rx="18" style="fill:#EAF0F8;stroke:#0A192F;stroke-width:3"/>
+          <rect x="45" y="44" width="11" height="22" rx="5.5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="58" y="42" width="11" height="22" rx="5.5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="71" y="43" width="11" height="22" rx="5.5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="84" y="46" width="11" height="22" rx="5.5" style="fill:#fff;stroke:#0A192F;stroke-width:3"/>
+          <rect x="53" y="84" width="34" height="11" rx="5.5" style="fill:none;stroke:#0A192F;stroke-width:2.5;stroke-dasharray:5 5"/>
+        </svg>
+        <p class="gesture-num">ESTADO 3 / 3</p>
+        <h3 class="gesture-name">Cierre perimetral</h3>
+        <p class="gesture-desc">Los cuatro dedos restantes se cierran sobre el pulgar, atrapándolo. Solo si los tres estados ocurren en este orden y dentro de la ventana temporal, la seña se valida.</p>
+      </div>
+    </div>
+
+    <!-- Deploy box -->
+    <div class="deploy-box">
+      <p class="deploy-kicker">Propuesta innovadora de despliegue ciudadano</p>
+      <h3 class="deploy-title">Más allá de la videollamada: integración en la red de videovigilancia urbana</h3>
+      <p class="deploy-text">Este proyecto trasciende el contexto original de la seña. La propuesta técnica consiste en integrar el software directamente en las redes de cámaras de seguridad pública y monitoreo urbano de la ciudad. Cuando un ciudadano en situación de peligro ejecuta el gesto en la vía pública frente a una cámara de vigilancia, el sistema procesa el flujo de video <strong style="color:#fff">localmente</strong> mediante visión artificial, detecta la secuencia en tiempo real y dispara una <strong style="color:#fff">alerta silenciosa automatizada</strong> hacia el centro de monitoreo de las fuerzas del orden.</p>
+      <p class="deploy-text">Este paradigma optimiza la prevención del delito y la protección de la integridad física sin escalar el riesgo frente al agresor: no exige que la víctima manipule un dispositivo, no emite sonido y no revela que la solicitud de auxilio fue realizada.</p>
+      <div class="flow-steps">
+        <div class="flow-step"><p class="flow-step-label">PASO 1</p><p class="flow-step-text">Gesto ejecutado en la vía pública</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><p class="flow-step-label">PASO 2</p><p class="flow-step-text">Captura por cámara de vigilancia urbana</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><p class="flow-step-label">PASO 3</p><p class="flow-step-text">Procesamiento local del flujo de video</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><p class="flow-step-label">PASO 4</p><p class="flow-step-text">Validación secuencial y temporal (FSM)</p></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step flow-step-red"><p class="flow-step-label flow-step-label-red">PASO 5</p><p class="flow-step-text">Alerta silenciosa al centro de monitoreo</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 2: INGENIERÍA -->
+<section id="ingenieria" class="section">
+  <div class="section-inner">
+    <p class="sec-kicker">02 — Ingeniería de software multiplataforma</p>
+    <h2 class="sec-title" style="max-width:760px">Co-diseño Python vs. C++: dos repositorios, un mismo pipeline de visión</h2>
+    <p class="sec-lead" style="margin-bottom:44px">El proyecto se materializa en dos repositorios de código independientes que comparten un núcleo algorítmico común: ambos sistemas implementan la captura del flujo de video mediante <strong style="color:#0A192F">OpenCV</strong> y la extracción de <strong style="color:#0A192F">21 puntos clave (landmarks) tridimensionales</strong> de la estructura ósea de la mano mediante <strong style="color:#0A192F">MediaPipe</strong>. Sobre esa base compartida, cada implementación responde a un perfil de despliegue radicalmente distinto.</p>
+    <div class="pipeline">
+      <p class="pipeline-label">Pipeline de visión por computadora común</p>
+      <div class="pipeline-steps">
+        <span class="pipe-node">Captura · OpenCV</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">21 landmarks 3D · MediaPipe</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">Distancias euclidianas</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node">Máquina de estados finitos</span>
+        <span class="pipe-arrow">→</span>
+        <span class="pipe-node-end">ALERTA</span>
+      </div>
+    </div>
+    <div class="two-col">
+      <div style="border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;transition:all .3s" onmouseenter="this.style.cssText+='box-shadow:0 16px 40px rgba(10,25,47,.10);transform:translateY(-4px)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div class="code-header"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span><span class="code-label">SignalForHelpPython / main.py</span></div>
+        <div class="code-body">
+          <p class="card-kicker">MÓDULO PYTHON · CIENCIA DE DATOS</p>
+          <h3 class="card-title">Prototipado rápido y experimentación ágil</h3>
+          <p class="card-text">El módulo Python constituye el entorno de Ciencia de Datos del proyecto: un laboratorio de iteración veloz donde se realiza la experimentación ágil con los umbrales de detección y la <strong style="color:#0A192F">calibración algebraica de las distancias euclidianas</strong> entre landmarks, normalizadas respecto del tamaño aparente de la mano para lograr invarianza a la distancia de la cámara.</p>
+          <p class="card-text">Su ecosistema lo vuelve el candidato natural para entornos de ejecución en la nube, integración con dashboards analíticos y validación científica de hipótesis antes de su traslado al motor de producción.</p>
+          <div class="card-meta">
+            <div class="meta-row"><span class="meta-key">Rol</span><span class="meta-val">Prototipado y calibración</span></div>
+            <div class="meta-row"><span class="meta-key">Memoria</span><span class="meta-val">Runtime + garbage collector</span></div>
+            <div class="meta-row"><span class="meta-key">Despliegue ideal</span><span class="meta-val">Nube · dashboards analíticos</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #E2E8F0;border-radius:14px;overflow:hidden;transition:all .3s" onmouseenter="this.style.cssText+='box-shadow:0 16px 40px rgba(10,25,47,.10);transform:translateY(-4px)'" onmouseleave="this.style.transform='';this.style.boxShadow=''">
+        <div class="code-header"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span><span class="code-label">signal_for_help / main.cpp</span></div>
+        <div class="code-body">
+          <p class="card-kicker">MÓDULO C++ · RENDIMIENTO CRÍTICO</p>
+          <h3 class="card-title">Motor de producción para el borde</h3>
+          <p class="card-text">El módulo C++ es el motor de rendimiento crítico orientado a producción. Al eliminar el entorno de ejecución (runtime) y los recolectores de basura de Python, gestiona la memoria de manera nativa mediante <strong style="color:#0A192F">punteros y estructuras de datos estructuradas</strong>, optimizando el uso de la CPU para alcanzar la máxima tasa de cuadros por segundo (FPS) con bajísima latencia.</p>
+          <p class="card-text">Esta característica lo convierte en el candidato idóneo para su portabilidad a hardware embebido y procesamiento en el borde (Edge Computing): cámaras inteligentes autónomas o microcontroladores avanzados como las placas Arduino de alta gama (Nicla Vision).</p>
+          <div class="card-meta">
+            <div class="meta-row"><span class="meta-key">Rol</span><span class="meta-val">Producción · tiempo real</span></div>
+            <div class="meta-row"><span class="meta-key">Memoria</span><span class="meta-val">Gestión nativa con punteros</span></div>
+            <div class="meta-row"><span class="meta-key">Despliegue ideal</span><span class="meta-val">Edge · Arduino Nicla Vision</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 3: PILARES -->
+<section id="investigacion" class="section bg-gray">
+  <div class="section-inner">
+    <p class="sec-kicker">03 — Marco científico e investigación</p>
+    <h2 class="sec-title" style="max-width:640px;margin-bottom:44px">Los cuatro pilares de la investigación</h2>
+    <div class="pillars-grid">
+      <div class="card" onmouseenter="this.style.cssText+='transform:translateY(-5px);box-shadow:0 20px 48px rgba(10,25,47,.12);border-color:#0A192F'" onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor=''">
+        <p class="pillar-num">I</p><p class="pillar-kicker">Pilar 1</p>
+        <h3 class="pillar-title">Origen y Evolución de las TIC</h3>
+        <p class="pillar-text">Perspectiva histórica que recorre el camino desde el procesamiento de datos manual y mecanizado hasta la era contemporánea de la computación cuántica, el Cloud Computing, el Big Data y la Inteligencia Artificial. Este recorrido contextualiza la necesidad de la automatización visual: cuando el volumen de flujos de video supera toda capacidad de supervisión humana, la única respuesta de ingeniería viable es delegar la observación primaria en sistemas de visión artificial.</p>
+      </div>
+      <div class="card" onmouseenter="this.style.cssText+='transform:translateY(-5px);box-shadow:0 20px 48px rgba(10,25,47,.12);border-color:#0A192F'" onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor=''">
+        <p class="pillar-num">II</p><p class="pillar-kicker">Pilar 2</p>
+        <h3 class="pillar-title">Construcción y Eficiencia Algorítmica</h3>
+        <p class="pillar-text">Fundamentos lógicos de la programación y optimización de estructuras de control aplicados al diseño matemático de la máquina de estados finitos que valida el orden secuencial y temporal de la seña. Cada transición de estado exige el cumplimiento estricto de condiciones geométricas sobre los 21 landmarks dentro de ventanas temporales acotadas, lo que minimiza falsos positivos y garantiza complejidad computacional constante por cuadro procesado.</p>
+      </div>
+      <div class="card" onmouseenter="this.style.cssText+='transform:translateY(-5px);box-shadow:0 20px 48px rgba(10,25,47,.12);border-color:#0A192F'" onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor=''">
+        <p class="pillar-num">III</p><p class="pillar-kicker">Pilar 3</p>
+        <h3 class="pillar-title">Gestión de la Información y Datos Biométricos</h3>
+        <p class="pillar-text">Infraestructura necesaria para el almacenamiento a gran escala, el preprocesamiento digital de imágenes y la extracción de características, junto con los protocolos criptográficos que aseguran la transmisión cifrada del flujo de video en tiempo real. El diseño privilegia el procesamiento local: la información que abandona el nodo de cámara es la alerta mínima necesaria, nunca el flujo biométrico crudo.</p>
+      </div>
+      <div class="card" onmouseenter="this.style.cssText+='transform:translateY(-5px);box-shadow:0 20px 48px rgba(10,25,47,.12);border-color:#0A192F'" onmouseleave="this.style.transform='';this.style.boxShadow='';this.style.borderColor=''">
+        <p class="pillar-num">IV</p><p class="pillar-kicker">Pilar 4</p>
+        <h3 class="pillar-title">Hardware Embebido, Ética Profesional y Leyes</h3>
+        <p class="pillar-text">Viabilidad sobre el ecosistema Arduino (incluyendo la Nicla Vision), mitigación algorítmica del sesgo y la discriminación para evitar derivas hacia la vigilancia masiva invasiva, y alineamiento estricto con los marcos legales internacionales más exigentes: el Reglamento General de Protección de Datos (GDPR) y la Ley de Inteligencia Artificial de la Unión Europea (EU AI Act), tratando las imágenes capturadas como datos biométricos de categoría especial.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 4: GALERÍA -->
+<section id="galeria" class="section">
+  <div class="section-inner">
+    <p class="sec-kicker">04 — Galería de implementación</p>
+    <h2 class="sec-title" style="max-width:700px">El sistema en ejecución: del esqueleto de la mano a la alerta</h2>
+    <p class="sec-lead" style="margin-bottom:40px">Demostración animada del funcionamiento del sistema —sin reconocimiento en tiempo real desde esta página—: la simulación reproduce el esqueleto de 21 landmarks de MediaPipe atravesando los tres estados de la seña, la validación de la máquina de estados finitos y el disparo de la alerta silenciosa.</p>
+
+    <div class="monitor-box">
+      <div class="monitor-bar">
+        <div class="monitor-left">
+          <span class="monitor-dot"></span>
+          <span class="monitor-title">CENTRO DE MONITOREO URBANO · ENCARNACIÓN</span>
+        </div>
+        <span class="monitor-right">FEED EN VIVO · OPENCV + MEDIAPIPE</span>
+      </div>
+
+      <!-- Demo animada -->
+      <div class="demo-row">
+        <div class="demo-panel" id="demoPanel">
+          <svg id="demoSvg" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" class="demo-svg-wrap"></svg>
+          <div class="demo-scanline"></div>
+          <span class="demo-chip" style="top:12px;left:12px">CAM-09 · DEMO SIMULADA</span>
+          <span class="demo-chip" style="top:12px;right:12px;color:#8FA6C6" id="fpsChip">FPS 60.0 · LAT 4 ms</span>
+          <span class="demo-chip" id="statusChip" style="bottom:16px;left:12px;color:#4ADE80;border-color:rgba(74,222,128,.35)">ESTADO 1/3 · PALMA EXTENDIDA · conf 0.97</span>
+          <div id="alertOverlay" style="display:none;position:absolute;inset:0;background:rgba(127,29,29,.18);display:none;grid;place-items:center">
+            <div class="demo-alert-box"><span class="demo-alert-dot"></span>SIGNAL FOR HELP DETECTED</div>
+          </div>
+          <div class="demo-progress" id="progressBar" style="width:25%;background:#2EE6A8"></div>
+        </div>
+        <div class="fsm-panel">
+          <p class="fsm-label">Máquina de estados finitos · validación</p>
+          <div class="fsm-row" id="fsm0">
+            <span class="fsm-icon" id="fsmIcon0">q1</span>
+            <div><p class="fsm-name">Palma extendida</p><p class="fsm-sub">Línea base de los 21 landmarks</p></div>
+          </div>
+          <div class="fsm-row" id="fsm1">
+            <span class="fsm-icon" id="fsmIcon1">q2</span>
+            <div><p class="fsm-name">Oclusión del pulgar</p><p class="fsm-sub">Distancia pulgar–centroide reducida</p></div>
+          </div>
+          <div class="fsm-row" id="fsm2">
+            <span class="fsm-icon" id="fsmIcon2">q3</span>
+            <div><p class="fsm-name">Cierre perimetral</p><p class="fsm-sub">Cuatro dedos sobre el pulgar</p></div>
+          </div>
+          <div class="fsm-row" id="fsm3">
+            <span class="fsm-icon" id="fsmIcon3">!</span>
+            <div><p class="fsm-name" id="fsmAlertName">Alerta silenciosa</p><p class="fsm-sub" id="fsmAlertSub">En espera de secuencia válida</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Log -->
+      <div class="log-section">
+        <p class="log-line">[12:04:31] CAM-09 :: estado_1 validado · palma extendida (conf. 0.97)</p>
+        <p class="log-line">[12:04:32] CAM-09 :: estado_2 validado · oclusión del pulgar (Δt 0.84 s)</p>
+        <p class="log-line alert">[12:04:33] CAM-09 :: SECUENCIA COMPLETA → alerta silenciosa despachada al centro de monitoreo</p>
+      </div>
+
+      <!-- Capturas reales -->
+      <div class="shots-label"><p>Capturas reales del programa · Python y C++</p></div>
+      <div class="shots-grid">
+        <div class="shot-wrap">
+          <img src="./img/cap1-palma-abierta.png" alt="Mano abierta paso 1/3">
+          <span class="shot-chip" style="top:10px;left:10px">CAM-04 · FASE 1</span>
+          <span class="shot-status" style="color:#4ADE80;border:1px solid rgba(74,222,128,.4)">ESTADO 1/3 · PALMA · Conf 99%</span>
+        </div>
+        <div class="shot-wrap">
+          <img src="./img/cap2-pulgar-adentro.png" alt="Pulgar adentro paso 2/3">
+          <span class="shot-chip" style="top:10px;left:10px">CAM-04 · FASE 2</span>
+          <span class="shot-status" style="color:#FBBF24;border:1px solid rgba(251,191,36,.4)">ESTADO 2/3 · PULGAR · Conf 98%</span>
+        </div>
+        <div class="shot-wrap">
+          <img src="./img/cap3-gesto-completado.png" alt="Gesto completado paso 3/3">
+          <span class="shot-chip" style="top:10px;left:10px">CAM-09 · FASE 3</span>
+          <span class="shot-status" style="color:#A78BFA;border:1px solid rgba(167,139,250,.4)">ESTADO 3/3 · CIERRE · Conf 99%</span>
+        </div>
+        <div class="shot-wrap alert-border">
+          <img src="./img/cap4-alerta-detected.png" alt="Signal for Help detectado">
+          <span class="shot-chip" style="top:10px;left:10px">CAM-09 · SIGNAL FOR HELP</span>
+          <div class="shot-alert"><span style="width:8px;height:8px;border-radius:50%;background:#fff;flex-shrink:0"></span>SIGNAL FOR HELP DETECTED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Repos -->
+    <div class="repo-grid" id="repositorios">
+      <a href="https://github.com/kaz-py/signal_for_help" target="_blank" class="repo-card">
+        <svg class="repo-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <div>
+          <p class="repo-kicker">C++ · MOTOR DE PRODUCCIÓN</p>
+          <p class="repo-name">kaz-py / signal_for_help</p>
+          <p class="repo-sub">Clonar, compilar y desplegar el motor nativo (Linux) →</p>
+        </div>
+      </a>
+      <a href="https://github.com/ivanf12300/SignalForHelpPython" target="_blank" class="repo-card">
+        <svg class="repo-icon" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        <div>
+          <p class="repo-kicker">PYTHON · CIENCIA DE DATOS</p>
+          <p class="repo-name">ivanf12300 / SignalForHelpPython</p>
+          <p class="repo-sub">Explorar el entorno de prototipado y calibración →</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIÓN 5: UNAE -->
+<section id="unae" class="unae-section grid-bg">
+  <div style="position:absolute;top:-10%;left:50%;transform:translateX(-50%);width:600px;height:400px;border-radius:50%;background:rgba(29,91,214,.22);filter:blur(100px);pointer-events:none"></div>
+  <div class="unae-inner" style="position:relative;z-index:1">
+    <p class="unae-kicker">05 — Sección insignia</p>
+    <h2 class="unae-title">Orgullo Ingeniería UNAE: Ingeniería Informática y Ciencia de Datos</h2>
+    <p class="unae-text">Esta carrera, de naturaleza disruptiva y pionera en la región, fusiona la rigurosidad de la ingeniería de software clásica —arquitectura, eficiencia algorítmica, gestión nativa de recursos— con la potencia analítica de la Inteligencia Artificial y la Ciencia de Datos. No se trata de dos disciplinas yuxtapuestas, sino de un perfil profesional integrado, capaz de concebir un sistema desde la formulación matemática hasta su despliegue en hardware de producción.</p>
+    <p class="unae-text">Este proyecto es la demostración tangible de esa visión: estudiantes de <strong style="color:#fff">primer año</strong> ya están capacitados para proponer e implementar soluciones tecnológicas de alta complejidad —visión por computadoras, sistemas multiplataforma, cumplimiento normativo internacional— con impacto directo en la seguridad ciudadana y el bienestar social de Encarnación.</p>
+    <div class="unae-btns">
+      <a href="#proyecto" class="unae-btn-main">Conocer el proyecto</a>
+      <a href="https://github.com/kaz-py/signal_for_help" target="_blank" class="unae-btn-sec">Repositorios en GitHub</a>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-inst">Universidad Autónoma de Encarnación · Facultad de Ciencias, Artes y Tecnología · Encarnación, Paraguay</p>
+      <p class="footer-year">Estudiantes de 1.er año · Ingeniería Informática y Ciencia de Datos · 2026</p>
+    </div>
+  </footer>
+</section>
+
+<script>
+// ---- FSM Demo Animation ----
+const CONN=[[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
+const POSES=[
+  [[100,185],[75,168],[58,150],[45,132],[35,114],[78,108],[74,80],[72,60],[70,42],[98,103],[97,70],[96,48],[95,28],[118,106],[121,76],[123,55],[125,36],[136,114],[142,92],[146,75],[149,58]],
+  [[100,185],[82,166],[84,148],[92,140],[101,134],[78,108],[74,80],[72,60],[70,42],[98,103],[97,70],[96,48],[95,28],[118,106],[121,76],[123,55],[125,36],[136,114],[142,92],[146,75],[149,58]],
+  [[100,185],[82,166],[84,150],[92,142],[100,138],[78,108],[73,90],[75,110],[79,124],[98,103],[95,82],[96,104],[97,120],[118,106],[120,86],[119,106],[118,120],[136,114],[139,98],[136,114],[134,126]]
+];
+const NS="http://www.w3.org/2000/svg";
+let phase=0;
+const svg=document.getElementById('demoSvg');
+const statusChip=document.getElementById('statusChip');
+const progressBar=document.getElementById('progressBar');
+const alertOverlay=document.getElementById('alertOverlay');
+const demoPanel=document.getElementById('demoPanel');
+
+// Create SVG groups for each pose
+const groups=POSES.map((pts,pi)=>{
+  const g=document.createElementNS(NS,'g');
+  g.style.opacity=pi===0?'1':'0';
+  g.style.transition='opacity 0.5s ease';
+  CONN.forEach(c=>{
+    const l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',pts[c[0]][0]);l.setAttribute('y1',pts[c[0]][1]);
+    l.setAttribute('x2',pts[c[1]][0]);l.setAttribute('y2',pts[c[1]][1]);
+    l.setAttribute('stroke','#2EE6A8');l.setAttribute('stroke-width','2.4');l.setAttribute('stroke-linecap','round');
+    g.appendChild(l);
+  });
+  pts.forEach(p=>{
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r','3.2');c.setAttribute('fill','#FF5964');
+    g.appendChild(c);
+  });
+  svg.appendChild(g);
+  return g;
+});
+
+const STATUS=[
+  {t:'ESTADO 1/3 · PALMA EXTENDIDA · conf 0.97',c:'#4ADE80',bc:'rgba(74,222,128,.35)'},
+  {t:'ESTADO 2/3 · OCLUSIÓN DEL PULGAR · Δt 0.84 s',c:'#4ADE80',bc:'rgba(74,222,128,.35)'},
+  {t:'ESTADO 3/3 · CIERRE PERIMETRAL · validando',c:'#FBBF24',bc:'rgba(251,191,36,.35)'},
+  {t:'SECUENCIA COMPLETA · ALERTA DESPACHADA',c:'#F87171',bc:'rgba(248,113,113,.35)'}
+];
+
+function updateFsm(ph){
+  for(let i=0;i<3;i++){
+    const row=document.getElementById('fsm'+i);
+    const icon=document.getElementById('fsmIcon'+i);
+    row.classList.remove('active','done');icon.classList.remove('active','done');
+    if(ph>i){row.classList.add('done');icon.classList.add('done');icon.textContent='✓';}
+    else if(ph===i){row.classList.add('active');icon.classList.add('active');}
+    else{icon.textContent=['q1','q2','q3'][i];}
+  }
+  const ar=document.getElementById('fsm3');
+  const ai=document.getElementById('fsmIcon3');
+  const an=document.getElementById('fsmAlertName');
+  const as_=document.getElementById('fsmAlertSub');
+  ar.classList.remove('alert-row');ai.classList.remove('alert');
+  if(ph===3){
+    ar.classList.add('alert-row');ai.classList.add('alert');
+    an.style.color='#FECACA';as_.textContent='DESPACHADA AL CENTRO DE MONITOREO';as_.classList.add('alert');
+  } else {
+    an.style.color='#E8EFF9';as_.textContent='En espera de secuencia válida';as_.classList.remove('alert');
+  }
+}
+
+function tick(){
+  // Hide all poses
+  groups.forEach((g,i)=>{ g.style.opacity=i===Math.min(phase,2)?'1':'0'; });
+  // Status chip
+  const s=STATUS[phase];
+  statusChip.textContent=s.t;statusChip.style.color=s.c;statusChip.style.borderColor=s.bc;
+  // Progress
+  progressBar.style.width=((phase+1)*25)+'%';
+  progressBar.style.background=phase===3?'#DC2626':'#2EE6A8';
+  // Alert overlay
+  alertOverlay.style.display=phase===3?'grid':'none';
+  // Panel flash
+  demoPanel.style.animation=phase===3?'alertFlash .8s linear infinite':'none';
+  // FSM
+  updateFsm(phase);
+  phase=(phase+1)%4;
+}
+tick();
+setInterval(tick,2400);
+
+// Intersection observer for fade-up on scroll
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});
+},{threshold:0.1});
+document.querySelectorAll('.card,.pillar-num,.deploy-box,.pipeline,.repo-card').forEach(el=>{
+  el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
