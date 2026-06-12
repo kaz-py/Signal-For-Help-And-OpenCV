@@ -1,9 +1,27 @@
+import { animate, stagger, onScroll } from 'animejs'
+import useAnime from '../../hooks/useAnime.js'
 import Footer from '../layout/Footer.jsx'
 import './Unae.css'
 
 export default function Unae() {
+  const rootRef = useAnime((root, ctx) => {
+    const inner = root.querySelector('.unae-inner')
+    const blocks = inner.querySelectorAll('.unae-kicker, .unae-title, .unae-text, .unae-btns')
+    blocks.forEach((b) => { b.style.opacity = '0' })
+    ctx.add(
+      animate(blocks, {
+        opacity: [0, 1],
+        y: [36, 0],
+        delay: stagger(130),
+        duration: 750,
+        ease: 'outExpo',
+        autoplay: onScroll({ target: inner, enter: 'bottom-=80 top' }),
+      }),
+    )
+  })
+
   return (
-    <section id="unae" className="unae-section grid-bg noise">
+    <section id="unae" className="unae-section grid-bg noise" ref={rootRef}>
       <div className="unae-glow" aria-hidden="true" />
       <div className="unae-inner">
         <p className="unae-kicker">05 — Sección insignia</p>
@@ -22,7 +40,7 @@ export default function Unae() {
           y el bienestar social de Encarnación.
         </p>
         <div className="unae-btns">
-          <a href="#proyecto" className="unae-btn unae-btn--main">Conocer el proyecto</a>
+          <a href="#proyecto" className="unae-btn unae-btn--main btn-glow">Conocer el proyecto</a>
           <a
             href="https://github.com/kaz-py/signal_for_help"
             target="_blank"

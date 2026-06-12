@@ -1,0 +1,69 @@
+.marquee-zone {
+  overflow: hidden;
+  padding: 26px 0;
+  background: var(--surface-alt);
+}
+
+.marquee {
+  position: relative;
+  width: 105%;
+  left: -2.5%;
+  transform: rotate(-1.4deg);
+  background: var(--navy-900);
+  border-top: 1px solid rgba(111, 160, 240, 0.3);
+  border-bottom: 1px solid rgba(111, 160, 240, 0.3);
+  box-shadow: 0 14px 40px -16px rgba(10, 25, 47, 0.45);
+  overflow: hidden;
+  padding: 13px 0;
+}
+
+.marquee--reverse {
+  transform: rotate(1.4deg);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeSlide 30s linear infinite;
+}
+
+.marquee--reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 34px;
+  padding-left: 34px;
+  font: 600 12.5px var(--font-mono);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-200);
+  white-space: nowrap;
+}
+
+.marquee-star {
+  color: var(--success);
+  font-size: 11px;
+}
+
+@keyframes marqueeSlide {
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}

@@ -1,11 +1,15 @@
 import Reveal from '../ui/Reveal.jsx'
-import HandIcon from '../ui/HandIcon.jsx'
-import { GESTURES, FLOW_STEPS } from '../../data/gestures.js'
+import GestureScroll from '../demo/GestureScroll.jsx'
+import useAnime from '../../hooks/useAnime.js'
+import { revealHeader } from '../../utils/animations.js'
+import { FLOW_STEPS } from '../../data/gestures.js'
 import './Humanitarian.css'
 
 export default function Humanitarian() {
+  const rootRef = useAnime((root, ctx) => revealHeader(root, ctx))
+
   return (
-    <section id="proyecto" className="section section--alt">
+    <section id="proyecto" className="section section--alt" ref={rootRef}>
       <div className="section-inner">
         <p className="sec-kicker">01 — Abordaje humanitario</p>
         <h2 className="sec-title" style={{ maxWidth: 720 }}>
@@ -28,16 +32,7 @@ export default function Humanitarian() {
           </p>
         </div>
 
-        <div className="gesture-grid">
-          {GESTURES.map((gesture, i) => (
-            <Reveal key={gesture.name} className="card" delay={i * 90}>
-              <HandIcon pose={gesture.pose} />
-              <p className="gesture-num">{gesture.num}</p>
-              <h3 className="gesture-name">{gesture.name}</h3>
-              <p className="gesture-desc">{gesture.desc}</p>
-            </Reveal>
-          ))}
-        </div>
+        <GestureScroll />
 
         <Reveal className="deploy-box">
           <p className="deploy-kicker">Propuesta innovadora de despliegue ciudadano</p>

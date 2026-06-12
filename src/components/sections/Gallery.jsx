@@ -1,12 +1,62 @@
-import Reveal from '../ui/Reveal.jsx'
+import { animate, stagger, onScroll } from 'animejs'
+import useAnime from '../../hooks/useAnime.js'
+import { revealHeader } from '../../utils/animations.js'
 import GithubIcon from '../ui/GithubIcon.jsx'
 import FsmDemo from '../demo/FsmDemo.jsx'
 import { SHOTS, REPOS } from '../../data/gallery.js'
 import './Gallery.css'
 
 export default function Gallery() {
+  const rootRef = useAnime((root, ctx) => {
+    revealHeader(root, ctx)
+
+    // El monitor completo emerge con un zoom suave
+    const monitor = root.querySelector('.monitor-box')
+    monitor.style.opacity = '0'
+    ctx.add(
+      animate(monitor, {
+        opacity: [0, 1],
+        y: [56, 0],
+        scale: [0.965, 1],
+        duration: 900,
+        ease: 'outExpo',
+        autoplay: onScroll({ target: monitor, enter: 'bottom-=60 top' }),
+      }),
+    )
+
+    // Capturas reales en cascada
+    const shotsGrid = root.querySelector('.shots-grid')
+    const shots = shotsGrid.querySelectorAll('.shot-wrap')
+    shots.forEach((s) => { s.style.opacity = '0' })
+    ctx.add(
+      animate(shots, {
+        opacity: [0, 1],
+        y: [32, 0],
+        scale: [0.94, 1],
+        delay: stagger(100),
+        duration: 600,
+        ease: 'outBack(1.2)',
+        autoplay: onScroll({ target: shotsGrid, enter: 'bottom-=40 top' }),
+      }),
+    )
+
+    // Repositorios desde lados opuestos
+    root.querySelectorAll('.repo-card').forEach((card, i) => {
+      card.style.opacity = '0'
+      ctx.add(
+        animate(card, {
+          opacity: [0, 1],
+          x: [i === 0 ? -48 : 48, 0],
+          duration: 700,
+          ease: 'outExpo',
+          autoplay: onScroll({ target: card, enter: 'bottom-=60 top' }),
+        }),
+      )
+    })
+  })
+
   return (
-    <section id="galeria" className="section">
+    <section id="galeria" className="section" ref={rootRef}>
       <div className="section-inner">
         <p className="sec-kicker">04 — Galería de implementación</p>
         <h2 className="sec-title" style={{ maxWidth: 700 }}>
@@ -24,7 +74,10 @@ export default function Gallery() {
               <span className="monitor-dot" aria-hidden="true" />
               <span className="monitor-title">CENTRO DE MONITOREO URBANO · ENCARNACIÓN</span>
             </div>
-            <span className="monitor-right">FEED EN VIVO · OPENCV + MEDIAPIPE</span>
+            <span className="monitor-right">
+              <span className="radar" aria-hidden="true" />
+              FEED EN VIVO · OPENCV + MEDIAPIPE
+            </span>
           </div>
 
           <FsmDemo />
@@ -56,15 +109,13 @@ export default function Gallery() {
         </div>
 
         <div className="repo-grid" id="repositorios">
-          {REPOS.map((repo, i) => (
-            <Reveal
+          {REPOS.map((repo) => (
+            <a
               key={repo.href}
-              as="a"
-              delay={i * 100}
               href={repo.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="repo-card"
+              className="repo-card spot"
             >
               <GithubIcon className="repo-icon" />
               <div>
@@ -72,7 +123,7 @@ export default function Gallery() {
                 <p className="repo-name">{repo.name}</p>
                 <p className="repo-sub">{repo.sub}</p>
               </div>
-            </Reveal>
+            </a>
           ))}
         </div>
       </div>

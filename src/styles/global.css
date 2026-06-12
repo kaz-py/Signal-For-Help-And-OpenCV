@@ -198,6 +198,72 @@ section[id] {
   transform: scaleX(1);
 }
 
+/* Spotlight que sigue al cursor (tarjetas .spot, ver CursorSpotlight) */
+.spot {
+  position: relative;
+}
+
+.spot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    340px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(29, 91, 214, 0.12),
+    transparent 45%
+  );
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+
+.spot:hover::after {
+  opacity: 1;
+}
+
+/* Botón con borde conic-gradient giratorio (estilo uiverse) */
+.btn-glow {
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.btn-glow::before {
+  content: '';
+  position: absolute;
+  z-index: -2;
+  left: 50%;
+  top: 50%;
+  width: 260%;
+  aspect-ratio: 1;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0% 10%,
+    var(--blue-300) 22%,
+    var(--success) 32%,
+    transparent 44% 55%,
+    var(--blue-600) 70%,
+    transparent 84%
+  );
+  transform: translate(-50%, -50%) rotate(0turn);
+  animation: glowSpin 3.2s linear infinite;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 2px;
+  border-radius: inherit;
+  background: var(--glow-inner, #fff);
+  transition: background 0.2s;
+}
+
+@keyframes glowSpin {
+  to { transform: translate(-50%, -50%) rotate(1turn); }
+}
+
 /* Textura de ruido para superficies oscuras */
 .noise::after {
   content: '';

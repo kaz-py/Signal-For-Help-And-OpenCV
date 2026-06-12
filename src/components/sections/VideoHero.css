@@ -131,6 +131,12 @@
   text-wrap: balance;
 }
 
+.vhero-word {
+  display: inline-block;
+  margin-right: 0.28em;
+  will-change: transform;
+}
+
 .vhero-sub {
   font: 400 13px / 1.6 var(--font-body);
   color: var(--slate-500);
@@ -146,23 +152,20 @@
 }
 
 .vhero-cta {
+  --glow-inner: #f2f4f7;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   font: 600 13px var(--font-body);
   color: var(--blue-600);
-  border: 1px solid var(--blue-400);
   border-radius: var(--radius-full);
-  padding: 10px 20px;
-  background: rgba(240, 240, 238, 0.6);
-  backdrop-filter: blur(4px);
-  transition: background 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+  padding: 11px 22px;
+  transition: color 0.2s, box-shadow 0.2s;
 }
 
 .vhero-cta:hover {
-  background: var(--blue-600);
+  --glow-inner: var(--blue-600);
   color: #fff;
-  border-color: var(--blue-600);
   box-shadow: var(--shadow-cta);
 }
 
@@ -187,9 +190,55 @@
   transform: translateX(2px);
 }
 
+/* Indicador de scroll tipo mouse (estilo uiverse) */
+.vhero-mouse {
+  position: absolute;
+  bottom: 42px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 38px;
+  border: 2px solid var(--slate-500);
+  border-radius: 14px;
+  z-index: 10;
+}
+
+.vhero-mouse::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  margin-left: -2px;
+  border-radius: 4px;
+  background: var(--blue-600);
+  animation: mouseDot 1.8s ease-in-out infinite;
+}
+
+.vhero-mouse::after {
+  content: 'SCROLL';
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font: 600 9px var(--font-mono);
+  letter-spacing: 0.22em;
+  color: var(--slate-500);
+}
+
+@keyframes mouseDot {
+  0% { opacity: 1; transform: translateY(0); }
+  70% { opacity: 0; transform: translateY(13px); }
+  100% { opacity: 0; transform: translateY(0); }
+}
+
 @media (max-width: 640px) {
   .vhero-nav {
     top: 12px;
+  }
+  .vhero-mouse {
+    display: none;
   }
   .vhero-logo {
     width: 40px;

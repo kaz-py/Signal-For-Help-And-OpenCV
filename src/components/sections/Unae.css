@@ -70,12 +70,12 @@
 }
 
 .unae-btn--main {
+  --glow-inner: #fff;
   color: var(--navy-900);
-  background: #fff;
 }
 
 .unae-btn--main:hover {
-  background: var(--blue-300);
+  --glow-inner: var(--blue-300);
   transform: translateY(-2px);
 }
 
