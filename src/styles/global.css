@@ -12,12 +12,16 @@
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  /* Nada puede desbordar horizontalmente (clip no rompe position: sticky) */
+  overflow-x: clip;
 }
 
 body {
   font-family: var(--font-body);
   color: var(--ink);
   background: var(--bg);
+  /* Solo scroll vertical: nunca desplazamiento lateral en móvil */
+  overflow-x: clip;
 }
 
 ::selection {
@@ -114,6 +118,9 @@ section[id] {
 
 .section {
   padding: 100px 24px;
+  /* Contiene los transforms previos a las animaciones de entrada
+     (clip no crea scroll container, así que sticky sigue funcionando) */
+  overflow-x: clip;
 }
 
 .section--alt {

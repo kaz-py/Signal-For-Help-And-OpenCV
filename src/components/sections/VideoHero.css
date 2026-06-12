@@ -78,6 +78,14 @@
   padding: 13px clamp(16px, 3vw, 32px);
   box-shadow: 0 2px 14px rgba(10, 25, 47, 0.08);
   transition: background-color 0.35s, box-shadow 0.35s;
+  /* Red de seguridad: si no entra, scrollea en vez de desbordar la pantalla */
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.vhero-pill::-webkit-scrollbar {
+  display: none;
 }
 
 /* Sobre la parte clara del video: píldoras claras con texto oscuro */
@@ -270,16 +278,46 @@
 
 @media (max-width: 640px) {
   .vhero-nav {
-    top: 12px;
+    top: 10px;
+    gap: 8px;
+    padding: 0 10px;
   }
   .vhero-mouse {
     display: none;
   }
   .vhero-logo {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
+    font-size: 13px;
+  }
+  .vhero-pill {
+    gap: 13px;
+    padding: 10px 14px;
+  }
+  .vhero-pill a {
+    font-size: 11.5px;
   }
   .vhero-content {
     margin-left: 0;
+  }
+}
+
+/* Teléfonos angostos */
+@media (max-width: 390px) {
+  .vhero-nav {
+    gap: 6px;
+    padding: 0 8px;
+  }
+  .vhero-logo {
+    width: 34px;
+    height: 34px;
+    font-size: 12px;
+  }
+  .vhero-pill {
+    gap: 10px;
+    padding: 9px 12px;
+  }
+  .vhero-pill a {
+    font-size: 10.5px;
   }
 }
