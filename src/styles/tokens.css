@@ -1,0 +1,75 @@
+/* ============================================
+   Design tokens — Signal for Help · UNAE
+   ============================================ */
+:root {
+  /* Color · brand */
+  --navy-950: #081222;
+  --navy-900: #0a192f;
+  --navy-800: #112240;
+  --navy-700: #16263f;
+  --blue-600: #1d5bd6;
+  --blue-400: #4d82e4;
+  --blue-300: #6fa0f0;
+  --blue-200: #9fc0f2;
+
+  /* Color · neutrals */
+  --ink: #0a192f;
+  --slate-600: #45556b;
+  --slate-500: #5b6b82;
+  --slate-400: #8fa6c6;
+  --border: #e2e8f0;
+  --surface: #ffffff;
+  --surface-alt: #f4f6f9;
+
+  /* Color · dark surface text */
+  --d-text: #e8eff9;
+  --d-text-muted: #a8b8cf;
+  --d-text-dim: #5b7299;
+  --d-border: rgba(255, 255, 255, 0.14);
+
+  /* Color · semantic */
+  --success: #2ee6a8;
+  --success-soft: #4ade80;
+  --warning: #fbbf24;
+  --danger: #dc2626;
+  --danger-soft: #f87171;
+
+  /* Typography */
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Spacing scale (8px rhythm) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-full: 99px;
+
+  /* Elevation */
+  --shadow-sm: 0 2px 8px rgba(10, 25, 47, 0.06);
+  --shadow-md: 0 10px 28px rgba(10, 25, 47, 0.1);
+  --shadow-lg: 0 18px 48px rgba(10, 25, 47, 0.14);
+  --shadow-cta: 0 8px 24px rgba(29, 91, 214, 0.35);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 180ms;
+  --t-med: 300ms;
+
+  /* Layout */
+  --container: 1140px;
+  --container-wide: 1180px;
+  --nav-h: 64px;
+}

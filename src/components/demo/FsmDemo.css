@@ -1,0 +1,221 @@
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 20px 20px 6px;
+}
+
+.demo-panel {
+  position: relative;
+  flex: 2 1 420px;
+  min-height: 400px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #1c3050;
+  background-color: #08111f;
+}
+
+.demo-panel--alert {
+  animation: alertFlash 0.8s linear infinite;
+}
+
+.demo-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.skeleton-pose {
+  transition: opacity 0.5s ease;
+}
+
+.demo-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(111, 160, 240, 0.6), transparent);
+  animation: scanline 3.6s linear infinite;
+  pointer-events: none;
+}
+
+.demo-chip {
+  position: absolute;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.1em;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(8, 18, 34, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  pointer-events: none;
+}
+
+.demo-chip--tl { top: 12px; left: 12px; }
+.demo-chip--tr { top: 12px; right: 12px; color: var(--slate-400); }
+.demo-chip--status { bottom: 16px; left: 12px; transition: color var(--t-med), border-color var(--t-med); }
+
+.demo-alert-overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(127, 29, 29, 0.18);
+  pointer-events: none;
+}
+
+.demo-alert-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(220, 38, 38, 0.95);
+  color: #fff;
+  font: 700 15px var(--font-mono);
+  letter-spacing: 0.12em;
+  padding: 14px 22px;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(220, 38, 38, 0.5);
+  animation: blinkText 1s steps(2, jump-none) infinite;
+}
+
+.demo-alert-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.demo-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  transition: width 0.6s ease, background var(--t-med);
+}
+
+/* FSM panel */
+.fsm-panel {
+  flex: 1 1 280px;
+  background: #0c1b30;
+  border: 1px solid #1c3050;
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.fsm-label {
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.16em;
+  color: var(--d-text-dim);
+  margin: 0 0 4px;
+  text-transform: uppercase;
+}
+
+.fsm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  transition: border-color 0.4s, background 0.4s;
+}
+
+.fsm-row--active {
+  border-color: var(--blue-300);
+  background: rgba(29, 91, 214, 0.22);
+}
+
+.fsm-row--done {
+  border-color: rgba(46, 230, 168, 0.4);
+  background: rgba(46, 230, 168, 0.08);
+}
+
+.fsm-row--alert {
+  border-color: rgba(220, 38, 38, 0.5);
+  background: rgba(220, 38, 38, 0.25);
+}
+
+.fsm-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font: 700 12px var(--font-mono);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--d-text-dim);
+  transition: background 0.4s, color 0.4s;
+}
+
+.fsm-icon--active {
+  background: var(--blue-300);
+  color: #08111f;
+}
+
+.fsm-icon--done {
+  background: var(--success);
+  color: #08111f;
+}
+
+.fsm-icon--alert {
+  background: var(--danger);
+  color: #fff;
+  animation: pulseDot 1s ease-in-out infinite;
+}
+
+.fsm-name {
+  margin: 0;
+  font: 600 13px var(--font-body);
+  color: var(--d-text);
+}
+
+.fsm-row--alert .fsm-name {
+  color: #fecaca;
+}
+
+.fsm-sub {
+  margin: 2px 0 0;
+  font: 400 11px var(--font-mono);
+  color: var(--d-text-dim);
+}
+
+.fsm-sub--alert {
+  color: var(--danger-soft);
+}
+
+/* Log */
+.demo-log {
+  padding: 14px 24px 20px;
+  display: grid;
+  gap: 6px;
+}
+
+.log-line {
+  font: 400 12px var(--font-mono);
+  color: var(--d-text-dim);
+  opacity: 0.25;
+  transition: opacity 0.4s ease;
+}
+
+.log-line--on {
+  opacity: 1;
+}
+
+.log-line--alert {
+  color: var(--danger-soft);
+}
+
+@media (max-width: 640px) {
+  .demo-panel {
+    min-height: 280px;
+  }
+  .fsm-panel {
+    flex: 1 1 100%;
+  }
+}

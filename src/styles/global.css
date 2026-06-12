@@ -1,0 +1,181 @@
+@import './tokens.css';
+
+/* ============ Reset ============ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--surface);
+}
+
+::selection {
+  background: var(--navy-900);
+  color: #fff;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+/* Anchors land below the sticky nav */
+section[id] {
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+}
+
+/* Keyboard focus — visible on every interactive element */
+:focus-visible {
+  outline: 3px solid var(--blue-300);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ============ Shared keyframes ============ */
+@keyframes blobPulse {
+  0%, 100% { transform: scale(1); opacity: 0.13; }
+  50% { transform: scale(1.28); opacity: 0.26; }
+}
+@keyframes gradShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes blinkText {
+  50% { opacity: 0.15; }
+}
+@keyframes scanline {
+  0% { top: -4%; }
+  100% { top: 104%; }
+}
+@keyframes alertFlash {
+  0%, 100% { box-shadow: inset 0 0 0 3px rgba(220, 38, 38, 0); }
+  50% { box-shadow: inset 0 0 0 3px rgba(220, 38, 38, 0.85); }
+}
+
+/* ============ Utilities ============ */
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+
+.section {
+  padding: 100px 24px;
+}
+
+.section--alt {
+  background: var(--surface-alt);
+}
+
+.section-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+/* Encabezados de sección compartidos */
+.sec-kicker {
+  font: 600 12px var(--font-mono);
+  letter-spacing: 0.2em;
+  color: var(--blue-600);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.sec-title {
+  font: 700 clamp(28px, 3.4vw, 42px) / 1.15 var(--font-display);
+  letter-spacing: -0.02em;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+
+.sec-lead {
+  font: 400 16px / 1.75 var(--font-body);
+  color: var(--slate-600);
+  max-width: 880px;
+  text-wrap: pretty;
+}
+
+.sec-lead strong {
+  color: var(--ink);
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--navy-900);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ Reduced motion ============ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

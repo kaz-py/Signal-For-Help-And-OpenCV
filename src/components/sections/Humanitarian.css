@@ -1,0 +1,146 @@
+.huma-intro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 56px;
+}
+
+/* Gesture cards */
+.gesture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 64px;
+}
+
+.gesture-num {
+  font: 600 12px var(--font-mono);
+  letter-spacing: 0.14em;
+  color: var(--blue-600);
+  margin: 0 0 10px;
+}
+
+.gesture-name {
+  font: 700 19px var(--font-display);
+  margin: 0 0 10px;
+}
+
+.gesture-desc {
+  font: 400 14.5px / 1.7 var(--font-body);
+  color: var(--slate-600);
+  margin: 0;
+}
+
+/* Deploy box */
+.deploy-box {
+  background: var(--navy-900);
+  border-radius: var(--radius-xl);
+  padding: clamp(32px, 5vw, 56px);
+  color: #fff;
+}
+
+.deploy-kicker {
+  font: 600 12px var(--font-mono);
+  letter-spacing: 0.2em;
+  color: var(--blue-300);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+}
+
+.deploy-title {
+  font: 700 clamp(22px, 2.6vw, 30px) / 1.25 var(--font-display);
+  margin: 0 0 18px;
+  max-width: 680px;
+}
+
+.deploy-text {
+  font: 400 15.5px / 1.75 var(--font-body);
+  color: var(--d-text-muted);
+  margin: 0 0 18px;
+  max-width: 880px;
+  text-wrap: pretty;
+}
+
+.deploy-text strong {
+  color: #fff;
+}
+
+/* Flow steps */
+.flow-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.flow-fragment {
+  display: contents;
+}
+
+.flow-step {
+  flex: 1;
+  min-width: 150px;
+  display: block;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--d-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  animation: flowOn 8s linear infinite;
+}
+
+.flow-step--alert {
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(220, 38, 38, 0.5);
+  animation-name: flowOnRed;
+}
+
+.flow-step-label {
+  display: block;
+  font: 600 11px var(--font-mono);
+  color: var(--blue-300);
+  margin: 0 0 6px;
+}
+
+.flow-step-label--alert {
+  color: var(--danger-soft);
+}
+
+.flow-step-text {
+  display: block;
+  font: 500 13.5px / 1.5 var(--font-body);
+  margin: 0;
+}
+
+.flow-arrow {
+  align-self: center;
+  font: 600 16px var(--font-mono);
+  color: var(--blue-300);
+  animation: arrowPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes flowOn {
+  0%, 10% {
+    border-color: var(--blue-300);
+    background: rgba(29, 91, 214, 0.3);
+    transform: translateY(-4px);
+  }
+  20%, 100% {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(0);
+  }
+}
+
+@keyframes flowOnRed {
+  0%, 10% {
+    border-color: var(--danger-soft);
+    background: rgba(220, 38, 38, 0.4);
+    transform: translateY(-4px);
+  }
+  20%, 100% {
+    border-color: rgba(220, 38, 38, 0.45);
+    background: rgba(220, 38, 38, 0.16);
+    transform: translateY(0);
+  }
+}

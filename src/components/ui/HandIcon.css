@@ -1,0 +1,7 @@
+.hand-icon {
+  width: 92px;
+  height: 92px;
+  display: block;
+  margin-bottom: 20px;
+  animation: floatY 5s ease-in-out infinite;
+}
