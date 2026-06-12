@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { animate, stagger } from 'animejs'
 import useAnime from '../../hooks/useAnime.js'
 import './VideoHero.css'
@@ -20,6 +21,38 @@ const NAV_LINKS = [
  * título animado palabra por palabra con anime.js.
  */
 export default function VideoHero() {
+  // La barra cambia de tema según el fondo que tenga debajo:
+  // clara sobre la zona luminosa del video, oscura sobre el resto de la página.
+  const [navDark, setNavDark] = useState(false)
+
+  useEffect(() => {
+    const hero = document.getElementById('inicio')
+    if (!hero) return
+    let ticking = false
+
+    const update = () => {
+      ticking = false
+      const rect = hero.getBoundingClientRect()
+      const navY = 44 // centro vertical de la barra fija
+      // Fracción del hero que queda bajo la barra (el degradado oscuro arranca ~62%)
+      const frac = (navY - rect.top) / rect.height
+      setNavDark(rect.bottom < navY + 20 || frac > 0.62)
+    }
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true
+        requestAnimationFrame(update)
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll, { passive: true })
+    update()
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
+  }, [])
+
   const rootRef = useAnime((root, ctx) => {
     const words = root.querySelectorAll('.vhero-word')
     words.forEach((w) => { w.style.opacity = '0' })
@@ -60,7 +93,7 @@ export default function VideoHero() {
       />
       <div className="vhero-fade" aria-hidden="true" />
 
-      <header className="vhero-nav">
+      <header className={`vhero-nav ${navDark ? 'vhero-nav--dark' : ''}`}>
         <a href="#inicio" className="vhero-logo" aria-label="Ir al inicio">U</a>
         <nav className="vhero-pill" aria-label="Navegación principal">
           {NAV_LINKS.map((link) => (

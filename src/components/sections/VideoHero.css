@@ -58,7 +58,8 @@
   font: 700 15px var(--font-display);
   color: #0b1030;
   box-shadow: 0 2px 14px rgba(10, 25, 47, 0.08);
-  transition: transform var(--t-fast) var(--ease-out), color var(--t-fast);
+  transition: transform var(--t-fast) var(--ease-out), color 0.35s,
+    background-color 0.35s, box-shadow 0.35s;
 }
 
 .vhero-logo:hover {
@@ -76,18 +77,44 @@
   border-radius: 12px;
   padding: 13px clamp(16px, 3vw, 32px);
   box-shadow: 0 2px 14px rgba(10, 25, 47, 0.08);
+  transition: background-color 0.35s, box-shadow 0.35s;
 }
 
-/* Las píldoras flotan sobre la parte clara del video: texto oscuro fijo */
+/* Sobre la parte clara del video: píldoras claras con texto oscuro */
 .vhero-pill a {
   font: 500 clamp(12px, 1.4vw, 14px) var(--font-body);
   color: #3a4257;
-  transition: color 0.2s;
+  transition: color 0.35s;
   white-space: nowrap;
 }
 
 .vhero-pill a:hover {
   color: #7c5cff;
+}
+
+/* ---- Tema oscuro de la barra: se activa al scrollear sobre fondo oscuro ---- */
+.vhero-nav--dark .vhero-logo,
+.vhero-nav--dark .vhero-pill {
+  background: rgba(13, 20, 48, 0.82);
+  box-shadow:
+    0 6px 28px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(136, 150, 210, 0.25);
+}
+
+.vhero-nav--dark .vhero-logo {
+  color: #eef1ff;
+}
+
+.vhero-nav--dark .vhero-logo:hover {
+  color: var(--blue-300);
+}
+
+.vhero-nav--dark .vhero-pill a {
+  color: #a9b2d6;
+}
+
+.vhero-nav--dark .vhero-pill a:hover {
+  color: var(--blue-300);
 }
 
 /* ---- Contenido inferior izquierdo ---- */
