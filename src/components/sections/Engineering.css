@@ -28,8 +28,8 @@
 
 .pipe-node {
   font: 500 13px var(--font-mono);
-  background: var(--surface);
-  border: 1px solid #cbd5e1;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 10px 16px;
   transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast), border-color var(--t-fast);
@@ -37,16 +37,16 @@
 
 .pipe-node:hover {
   transform: translateY(-2px);
-  border-color: var(--blue-600);
-  box-shadow: var(--shadow-sm);
+  border-color: var(--blue-300);
+  box-shadow: var(--glow-cyan);
 }
 
 .pipe-node--end {
   font-weight: 600;
-  background: linear-gradient(120deg, var(--navy-900), var(--blue-600) 160%);
-  color: #fff;
-  border-color: var(--navy-900);
-  box-shadow: 0 4px 14px rgba(29, 91, 214, 0.3);
+  background: linear-gradient(120deg, var(--blue-600), var(--blue-300));
+  color: #0b1030;
+  border: none;
+  box-shadow: 0 4px 20px rgba(124, 92, 255, 0.45);
 }
 
 .pipe-arrow {
@@ -72,7 +72,8 @@
 
 .module-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), var(--glow-violet);
+  border-color: rgba(124, 92, 255, 0.5);
 }
 
 .code-header {
@@ -145,7 +146,7 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid #edf1f6;
+  border-top: 1px solid rgba(136, 150, 210, 0.16);
   padding-top: 8px;
 }
 

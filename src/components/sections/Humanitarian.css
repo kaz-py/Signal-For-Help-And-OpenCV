@@ -36,14 +36,14 @@
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(60% 80% at 85% 0%, rgba(29, 91, 214, 0.28), transparent 65%),
-    radial-gradient(40% 60% at 8% 100%, rgba(46, 230, 168, 0.08), transparent 70%),
-    var(--navy-900);
-  border: 1px solid rgba(111, 160, 240, 0.18);
+    radial-gradient(60% 80% at 85% 0%, rgba(124, 92, 255, 0.3), transparent 65%),
+    radial-gradient(40% 60% at 8% 100%, rgba(34, 211, 238, 0.12), transparent 70%),
+    var(--surface);
+  border: 1px solid rgba(136, 150, 210, 0.22);
   border-radius: var(--radius-xl);
   padding: clamp(32px, 5vw, 56px);
   color: #fff;
-  box-shadow: 0 30px 70px -30px rgba(10, 25, 47, 0.55);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.6);
 }
 
 /* Línea superior luminosa */
@@ -54,7 +54,7 @@
   left: 10%;
   right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(111, 160, 240, 0.7), transparent);
+  background: linear-gradient(90deg, transparent, var(--blue-600), var(--blue-300), transparent);
 }
 
 .deploy-kicker {

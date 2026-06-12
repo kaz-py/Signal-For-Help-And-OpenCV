@@ -1,5 +1,5 @@
 .unae-section {
-  background-color: var(--navy-900);
+  background-color: var(--surface-alt);
   padding: 110px 24px 0;
   color: #fff;
   position: relative;
@@ -11,10 +11,10 @@
   top: -10%;
   left: 50%;
   transform: translateX(-50%);
-  width: 600px;
-  height: 400px;
+  width: 640px;
+  height: 420px;
   border-radius: 50%;
-  background: rgba(29, 91, 214, 0.22);
+  background: rgba(124, 92, 255, 0.28);
   filter: blur(100px);
   pointer-events: none;
 }
@@ -40,6 +40,10 @@
   letter-spacing: -0.025em;
   margin: 0 0 28px;
   text-wrap: balance;
+  background: linear-gradient(100deg, #fff 25%, var(--blue-200) 60%, var(--blue-300) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .unae-text {

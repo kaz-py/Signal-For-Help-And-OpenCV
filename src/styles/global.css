@@ -17,11 +17,11 @@ html {
 body {
   font-family: var(--font-body);
   color: var(--ink);
-  background: var(--surface);
+  background: var(--bg);
 }
 
 ::selection {
-  background: var(--navy-900);
+  background: var(--blue-600);
   color: #fff;
 }
 
@@ -52,12 +52,12 @@ section[id] {
   background: var(--surface-alt);
 }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--navy-800), var(--blue-600));
+  background: linear-gradient(180deg, var(--blue-600), var(--blue-300));
   border-radius: 8px;
   border: 3px solid var(--surface-alt);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--blue-600);
+  background: var(--blue-300);
 }
 
 /* Keyboard focus — visible on every interactive element */
@@ -190,8 +190,8 @@ section[id] {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--navy-900);
+  box-shadow: var(--shadow-lg), var(--glow-violet);
+  border-color: rgba(124, 92, 255, 0.55);
 }
 
 .card:hover::before {
