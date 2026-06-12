@@ -3,7 +3,7 @@ import './Unae.css'
 
 export default function Unae() {
   return (
-    <section id="unae" className="unae-section grid-bg">
+    <section id="unae" className="unae-section grid-bg noise">
       <div className="unae-glow" aria-hidden="true" />
       <div className="unae-inner">
         <p className="unae-kicker">05 — Sección insignia</p>

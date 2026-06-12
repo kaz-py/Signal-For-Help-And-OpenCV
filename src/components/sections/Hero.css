@@ -1,8 +1,24 @@
 .hero {
   background-color: var(--navy-900);
-  padding: 120px 24px 110px;
+  padding: 120px 24px 130px;
   position: relative;
   overflow: hidden;
+}
+
+/* Campo de estrellas sutil */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%, rgba(159, 192, 242, 0.5) 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 64%, rgba(255, 255, 255, 0.35) 50%, transparent 51%),
+    radial-gradient(2px 2px at 44% 12%, rgba(111, 160, 240, 0.45) 50%, transparent 51%),
+    radial-gradient(1px 1px at 61% 38%, rgba(255, 255, 255, 0.3) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 73% 70%, rgba(159, 192, 242, 0.4) 50%, transparent 51%),
+    radial-gradient(1px 1px at 86% 26%, rgba(255, 255, 255, 0.4) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 93% 56%, rgba(111, 160, 240, 0.35) 50%, transparent 51%);
 }
 
 .hero-blob {
@@ -108,8 +124,28 @@
 }
 
 .hero-btn--main {
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(120deg, var(--blue-300), var(--blue-600));
   box-shadow: var(--shadow-cta);
+}
+
+/* Brillo de barrido periódico */
+.hero-btn--main::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 45%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-20deg);
+  animation: btnShine 4.5s ease-in-out infinite;
+}
+
+@keyframes btnShine {
+  0%, 60% { left: -70%; }
+  100% { left: 140%; }
 }
 
 .hero-btn--main:hover {

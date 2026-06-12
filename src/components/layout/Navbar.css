@@ -29,12 +29,19 @@
 .nav-logo-box {
   width: 28px;
   height: 28px;
-  background: var(--navy-900);
+  background: linear-gradient(135deg, var(--blue-600), var(--navy-900) 80%);
   border-radius: var(--radius-sm);
   display: grid;
   place-items: center;
   color: #fff;
   font: 700 12px var(--font-display);
+  box-shadow: 0 2px 8px rgba(29, 91, 214, 0.35);
+  transition: box-shadow var(--t-med), transform var(--t-med) var(--ease-out);
+}
+
+.nav-logo:hover .nav-logo-box {
+  box-shadow: 0 4px 14px rgba(29, 91, 214, 0.55);
+  transform: rotate(-6deg) scale(1.06);
 }
 
 .nav-title {

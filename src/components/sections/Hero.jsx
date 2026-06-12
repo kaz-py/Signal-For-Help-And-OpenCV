@@ -1,10 +1,11 @@
+import HeroVision from '../demo/HeroVision.jsx'
 import './Hero.css'
 
 const TECH_CHIPS = ['OpenCV', 'MediaPipe · 21 landmarks', 'Python 3', 'C++ nativo', 'Edge Computing']
 
 export default function Hero() {
   return (
-    <section id="inicio" className="hero grid-bg">
+    <section id="inicio" className="hero grid-bg noise">
       <div className="hero-blob hero-blob--1" aria-hidden="true" />
       <div className="hero-blob hero-blob--2" aria-hidden="true" />
       <div className="hero-inner">
@@ -28,6 +29,7 @@ export default function Hero() {
             <li key={chip} className="chip">{chip}</li>
           ))}
         </ul>
+        <HeroVision />
       </div>
     </section>
   )

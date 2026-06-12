@@ -1,0 +1,195 @@
+/* ============ Escena 3D de visión artificial ============ */
+.hv-wrap {
+  max-width: 860px;
+  margin: 72px auto 0;
+  perspective: 1300px;
+  position: relative;
+  animation: fadeUp 0.9s 0.7s var(--ease-out) both;
+}
+
+.hv-glow {
+  position: absolute;
+  inset: 8% -4% -14%;
+  background: radial-gradient(50% 60% at 50% 60%, rgba(29, 91, 214, 0.4), transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.hv-scene {
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(13deg);
+  transition: transform 0.18s ease-out;
+  will-change: transform;
+}
+
+/* ---- Feed de cámara ---- */
+.hv-feed {
+  position: relative;
+  height: clamp(300px, 38vw, 430px);
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(111, 160, 240, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111, 160, 240, 0.05) 1px, transparent 1px),
+    radial-gradient(80% 90% at 50% 10%, #0b1d3a 0%, #050d1a 70%);
+  background-size: 34px 34px, 34px 34px, 100% 100%;
+  border: 1px solid rgba(111, 160, 240, 0.28);
+  box-shadow:
+    0 40px 90px -24px rgba(3, 10, 24, 0.9),
+    0 0 0 1px rgba(8, 18, 34, 0.6),
+    0 0 64px -12px rgba(29, 91, 214, 0.45);
+}
+
+/* Esquinas de encuadre */
+.hv-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(111, 160, 240, 0.75);
+  z-index: 3;
+}
+
+.hv-corner--tl { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-radius: 4px 0 0 0; }
+.hv-corner--tr { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-radius: 0 4px 0 0; }
+.hv-corner--bl { bottom: 12px; left: 12px; border-right: 0; border-top: 0; border-radius: 0 0 0 4px; }
+.hv-corner--br { bottom: 12px; right: 12px; border-left: 0; border-top: 0; border-radius: 0 0 4px 0; }
+
+.hv-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hv-pose {
+  transition: opacity 0.55s ease;
+}
+
+/* La bbox persigue la pose actual (x/y/width/height son propiedades CSS en SVG2) */
+.hv-bbox {
+  transition: x 0.55s var(--ease-out), y 0.55s var(--ease-out),
+    width 0.55s var(--ease-out), height 0.55s var(--ease-out);
+  animation: hvDash 14s linear infinite;
+}
+
+@keyframes hvDash {
+  to { stroke-dashoffset: -160; }
+}
+
+.hv-bbox-label {
+  font: 600 7.5px var(--font-mono);
+  letter-spacing: 0.12em;
+  fill: #9fc0f2;
+  transition: x 0.55s var(--ease-out), y 0.55s var(--ease-out);
+}
+
+.hv-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(46, 230, 168, 0.55), transparent);
+  box-shadow: 0 0 18px rgba(46, 230, 168, 0.35);
+  animation: scanline 4.2s linear infinite;
+  pointer-events: none;
+}
+
+.hv-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 90% at 50% 50%, transparent 55%, rgba(3, 10, 24, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* ---- HUD dentro del feed ---- */
+.hv-hud {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.12em;
+  color: #c7d4e6;
+  background: rgba(5, 13, 26, 0.78);
+  border: 1px solid rgba(111, 160, 240, 0.25);
+  backdrop-filter: blur(6px);
+  padding: 6px 11px;
+  border-radius: 6px;
+  z-index: 4;
+}
+
+.hv-hud--rec { top: 18px; left: 44px; color: #fca5a5; }
+.hv-hud--cam { top: 18px; right: 44px; }
+.hv-hud--fps { bottom: 18px; right: 44px; color: var(--slate-400); }
+.hv-hud--track { bottom: 18px; left: 44px; color: #4ade80; border-color: rgba(74, 222, 128, 0.3); }
+
+.hv-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+
+/* ---- Chips flotantes en 3D ---- */
+.hv-chip {
+  --z: 0px;
+  position: absolute;
+  font: 600 11px var(--font-mono);
+  letter-spacing: 0.12em;
+  color: #e8eff9;
+  background: linear-gradient(135deg, rgba(17, 34, 64, 0.92), rgba(8, 18, 34, 0.92));
+  border: 1px solid rgba(111, 160, 240, 0.4);
+  padding: 9px 14px;
+  border-radius: 8px;
+  box-shadow: 0 14px 36px rgba(3, 10, 24, 0.6), 0 0 24px -6px rgba(29, 91, 214, 0.5);
+  transform: translateZ(var(--z));
+  animation: hvFloat 5s ease-in-out infinite;
+}
+
+@keyframes hvFloat {
+  0%, 100% { transform: translateZ(var(--z)) translateY(0); }
+  50% { transform: translateZ(var(--z)) translateY(-9px); }
+}
+
+.hv-chip--mp {
+  --z: 70px;
+  top: 10%;
+  left: -34px;
+  color: #7ef0c3;
+  border-color: rgba(46, 230, 168, 0.4);
+}
+
+.hv-chip--cv {
+  --z: 90px;
+  bottom: 14%;
+  right: -30px;
+  animation-delay: 1.2s;
+}
+
+.hv-chip--conf {
+  --z: 50px;
+  top: 38%;
+  right: -48px;
+  color: #9fc0f2;
+  animation-delay: 2.1s;
+}
+
+/* En pantallas chicas la perspectiva se aplana y los chips entran al feed */
+@media (max-width: 760px) {
+  .hv-scene {
+    transform: rotateX(7deg);
+  }
+  .hv-chip--mp { left: 10px; }
+  .hv-chip--cv { right: 10px; }
+  .hv-chip--conf { display: none; }
+  .hv-hud--cam, .hv-hud--fps { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hv-scene {
+    transform: none;
+  }
+}

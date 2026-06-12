@@ -5,8 +5,11 @@
 }
 
 .pillar-num {
-  font: 800 44px var(--font-display);
-  color: #c6d3e6;
+  font: 800 48px var(--font-display);
+  background: linear-gradient(135deg, #c6d3e6 20%, var(--blue-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin: 0 0 6px;
   line-height: 1;
 }

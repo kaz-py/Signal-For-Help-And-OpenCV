@@ -44,6 +44,22 @@ section[id] {
   scroll-margin-top: calc(var(--nav-h) + 16px);
 }
 
+/* Scrollbar de marca */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface-alt);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--navy-800), var(--blue-600));
+  border-radius: 8px;
+  border: 3px solid var(--surface-alt);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--blue-600);
+}
+
 /* Keyboard focus — visible on every interactive element */
 :focus-visible {
   outline: 3px solid var(--blue-300);
@@ -111,11 +127,23 @@ section[id] {
 
 /* Encabezados de sección compartidos */
 .sec-kicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font: 600 12px var(--font-mono);
   letter-spacing: 0.2em;
   color: var(--blue-600);
   text-transform: uppercase;
   margin: 0 0 14px;
+}
+
+.sec-kicker::before {
+  content: '';
+  width: 30px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--blue-600), var(--blue-300));
+  flex-shrink: 0;
 }
 
 .sec-title {
@@ -137,6 +165,8 @@ section[id] {
 }
 
 .card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -144,10 +174,38 @@ section[id] {
   transition: transform var(--t-med) var(--ease-out), box-shadow var(--t-med) var(--ease-out), border-color var(--t-med);
 }
 
+/* Barra de acento que se despliega en hover */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue-600), var(--blue-300), var(--success));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-out);
+}
+
 .card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--navy-900);
+}
+
+.card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Textura de ruido para superficies oscuras */
+.noise::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
 }
 
 /* Scroll reveal */

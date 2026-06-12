@@ -32,13 +32,21 @@
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 10px 16px;
+  transition: transform var(--t-fast) var(--ease-out), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+
+.pipe-node:hover {
+  transform: translateY(-2px);
+  border-color: var(--blue-600);
+  box-shadow: var(--shadow-sm);
 }
 
 .pipe-node--end {
   font-weight: 600;
-  background: var(--navy-900);
+  background: linear-gradient(120deg, var(--navy-900), var(--blue-600) 160%);
   color: #fff;
   border-color: var(--navy-900);
+  box-shadow: 0 4px 14px rgba(29, 91, 214, 0.3);
 }
 
 .pipe-arrow {
@@ -68,7 +76,8 @@
 }
 
 .code-header {
-  background: var(--navy-900);
+  background: linear-gradient(120deg, var(--navy-900), var(--navy-800));
+  border-bottom: 1px solid rgba(111, 160, 240, 0.18);
   padding: 14px 20px;
   display: flex;
   align-items: center;

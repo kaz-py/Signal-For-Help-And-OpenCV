@@ -1,10 +1,26 @@
 /* Monitor frame */
 .monitor-box {
+  position: relative;
   background: var(--navy-950);
   border-radius: var(--radius-xl);
   overflow: hidden;
   margin-bottom: 56px;
   border: 1px solid var(--navy-700);
+  box-shadow:
+    0 40px 90px -32px rgba(10, 25, 47, 0.5),
+    0 0 60px -24px rgba(29, 91, 214, 0.4);
+}
+
+/* Línea superior luminosa del monitor */
+.monitor-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(111, 160, 240, 0.6), transparent);
+  z-index: 1;
 }
 
 .monitor-bar {
@@ -169,6 +185,12 @@
   height: 36px;
   fill: var(--ink);
   flex-shrink: 0;
+  transition: fill var(--t-med), transform var(--t-med) var(--ease-out);
+}
+
+.repo-card:hover .repo-icon {
+  fill: var(--blue-600);
+  transform: scale(1.12) rotate(-5deg);
 }
 
 .repo-kicker {
